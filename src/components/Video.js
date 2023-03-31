@@ -30,7 +30,7 @@ const Video = () => {
     }, [dispatch, id])
 
     const handleLike = async () => {
-      let data = await fetch(`https://videostream-y3uo.onrender.com/user/like/${video._id}`, {
+      let data = await fetch(`https://videostream-y3uo.onrender.com/user/like/${video?._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -39,7 +39,7 @@ const Video = () => {
       dispatch(like(currentUser?._id)); 
     }
     const handleDislike = async () => {
-      let data = await fetch(`https://videostream-y3uo.onrender.com/user/dislike/${video._id}`, {
+      let data = await fetch(`https://videostream-y3uo.onrender.com/user/dislike/${video?._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -57,7 +57,7 @@ const Video = () => {
             <iframe
             width="100%"
             height="400"
-            src={video.videoUrl}
+            src={video?.videoUrl}
             title="YouTube video player"
             // frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -68,7 +68,7 @@ const Video = () => {
                 <img src={img} alt='...' style={{borderRadius:"50%"}} height="30" width="30"/>
                 <div>
                   <h6>{channel?.name}</h6>
-                  <p>{video.views} Views • {format(video.createdAt)}</p>
+                  <p>{video?.views} Views • {format(video?.createdAt)}</p>
                 </div>
               </div>
               <div className='likeDislike'>
@@ -77,7 +77,7 @@ const Video = () => {
                   </button>{video?.likes.length}</span> <button onClick={handleDislike} style={{all:"unset", cursor:"pointer", marginRight:"2px"}}>{video?.dislikes?.includes(currentUser?._id) ? <ThumbDownAltIcon/> :<ThumbDownOffAltIcon/>}</button> Dislike
               </div>
             </div>
-            <div className='description'>{video.desc}</div>
+            <div className='description'>{video?.desc}</div>
           </div>
       </div>
     </>
