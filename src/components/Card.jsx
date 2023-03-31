@@ -58,7 +58,7 @@ const Card = ({ type, video }) => {
 
   useEffect(() => {
     const fetchChannel = async () => {
-      let res = await fetch(`https://videostream-y3uo.onrender.com/${video.userId}`);
+      let res = await fetch(`https://videostream-y3uo.onrender.com/user/getUser/${video.userId}`);
       res = await res.json();
       setChannel(res);
     };
@@ -66,7 +66,7 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   const handleView = async () => {
-    let data = await fetch(`https://videostream-y3uo.onrender.com/${video._id}`, {
+    let data = await fetch(`https://videostream-y3uo.onrender.com/video/view/${video._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
