@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {format} from "timeago.js";
-import Avatar from '../avatar.png'
+import { format } from "timeago.js";
+import Avatar from "../avatar.png";
 
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "360px"};
@@ -58,7 +58,9 @@ const Card = ({ type, video }) => {
 
   useEffect(() => {
     const fetchChannel = async () => {
-      let res = await fetch(`https://videostream-y3uo.onrender.com/user/getUser/${video.userId}`);
+      let res = await fetch(
+        `https://mysterious-fish-jodhpurs.cyclic.app/user/getUser/${video.userId}`
+      );
       res = await res.json();
       setChannel(res);
     };
@@ -66,30 +68,33 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   const handleView = async () => {
-    let data = await fetch(`https://videostream-y3uo.onrender.com/video/view/${video._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-      data = await data.json();
-  }
+    let data = await fetch(
+      `https://mysterious-fish-jodhpurs.cyclic.app/video/view/${video._id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
+    data = await data.json();
+  };
 
   return (
-    <Link onClick={handleView} to={`/video/${video._id}`} style={{ textDecoration: "none", color:"white" }}>
+    <Link
+      onClick={handleView}
+      to={`/video/${video._id}`}
+      style={{ textDecoration: "none", color: "white" }}
+    >
       <Container type={type}>
-        <Image
-          type={type}
-          src={video.imgUrl}
-        />
+        <Image type={type} src={video.imgUrl} />
         <Details type={type}>
-          <ChannelImage
-            type={type}
-            src={Avatar}
-          />
+          <ChannelImage type={type} src={Avatar} />
           <Texts>
             <Title>{video.title}</Title>
             <ChannelName>{channel?.name}</ChannelName>
-            <Info>{video.views} views • {format(video.createdAt)}</Info>
+            <Info>
+              {video.views} views • {format(video.createdAt)}
+            </Info>
           </Texts>
         </Details>
       </Container>

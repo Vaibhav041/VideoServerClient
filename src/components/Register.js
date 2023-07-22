@@ -10,14 +10,17 @@ const Register = () => {
 
   const handleClick = async () => {
     console.log(user);
-    let data = await fetch("https://videostream-y3uo.onrender.com/register", {
-      method: "post",
-      body: JSON.stringify(user),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    let data = await fetch(
+      "https://mysterious-fish-jodhpurs.cyclic.app/register",
+      {
+        method: "post",
+        body: JSON.stringify(user),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     data = await data.json();
     if (data.error) {
       alert(data.error);

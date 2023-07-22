@@ -9,7 +9,6 @@ import {
 import app from "../firebase";
 import { useNavigate } from "react-router-dom";
 
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -38,11 +37,11 @@ const Close = styled.div`
   top: 10px;
   right: 10px;
   cursor: pointer;
-  color:white;
+  color: white;
 `;
 const Title = styled.h1`
   text-align: center;
-  color:white;
+  color: white;
 `;
 
 const Input = styled.input`
@@ -71,7 +70,7 @@ const Button = styled.button`
 `;
 const Label = styled.label`
   font-size: 14px;
-  color:white;
+  color: white;
 `;
 const Upload = ({ setOpen, type, updateId }) => {
   const [img, setImg] = useState(undefined);
@@ -82,14 +81,13 @@ const Upload = ({ setOpen, type, updateId }) => {
   const [tags, setTags] = useState([]);
   console.log(type);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInputs((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
-
 
   const uploadFile = (file, urlType) => {
     const storage = getStorage(app);
@@ -102,7 +100,9 @@ const Upload = ({ setOpen, type, updateId }) => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        urlType === "imgUrl" ? setImgPerc(Math.round(progress)) : setVideoPerc(Math.round(progress));
+        urlType === "imgUrl"
+          ? setImgPerc(Math.round(progress))
+          : setVideoPerc(Math.round(progress));
         switch (snapshot.state) {
           case "paused":
             console.log("Upload is paused");
@@ -126,55 +126,65 @@ const Upload = ({ setOpen, type, updateId }) => {
   };
 
   useEffect(() => {
-    video && uploadFile(video , "videoUrl");
+    video && uploadFile(video, "videoUrl");
   }, [video]);
 
   useEffect(() => {
     img && uploadFile(img, "imgUrl");
   }, [img]);
 
-  const handleUpload = async (e)=>{
+  const handleUpload = async (e) => {
     e.preventDefault();
-    const data = {...inputs, tags};
-    let res = await fetch('https://videostream-y3uo.onrender.com/video/add', {
-      method:"post",
-      body:JSON.stringify(data),
-      credentials: "include",
-      headers:{
-                'Content-Type':'application/json'
-            }
-
-    })
+    const data = { ...inputs, tags };
+    let res = await fetch(
+      "https://mysterious-fish-jodhpurs.cyclic.app/video/add",
+      {
+        method: "post",
+        body: JSON.stringify(data),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const response = await res.json();
-    setOpen(false)
+    setOpen(false);
     console.log(res.status);
-    if (res.status === 200) 
-      navigate(`/video/${response._id}`)
-  }
+    if (res.status === 200) navigate(`/video/${response._id}`);
+  };
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const data = {...inputs, tags};
-    let res = await fetch(`https://videostream-y3uo.onrender.com/video/update/${updateId}`, {
-      method:"put",
-      body:JSON.stringify(data),
-      credentials: "include",
-      headers:{
-                'Content-Type':'application/json'
-            }
-    })
+    const data = { ...inputs, tags };
+    let res = await fetch(
+      `https://mysterious-fish-jodhpurs.cyclic.app/video/update/${updateId}`,
+      {
+        method: "put",
+        body: JSON.stringify(data),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     res = await res.json();
     setOpen(false);
-    navigate('/profile');
-  } 
+    navigate("/profile");
+  };
 
   return (
     <Container>
       <Wrapper>
         <Close onClick={() => setOpen(false)}>X</Close>
-        {type==="update" ? <Title>Update Video</Title> : <Title>Upload a New Video</Title>}
+        {type === "update" ? (
+          <Title>Update Video</Title>
+        ) : (
+          <Title>Upload a New Video</Title>
+        )}
         <Label>Video:</Label>
         {videoPerc > 0 ? (
-          <span style={{color:"white"}}>{"Uploading:" + videoPerc + "%"}</span>
+          <span style={{ color: "white" }}>
+            {"Uploading:" + videoPerc + "%"}
+          </span>
         ) : (
           <Input
             type="file"
@@ -196,7 +206,7 @@ const Upload = ({ setOpen, type, updateId }) => {
         />
         <Label>Image:</Label>
         {imgPerc > 0 ? (
-          <span style={{color:"white"}}>{"Uploading:" + imgPerc + "%"}</span>
+          <span style={{ color: "white" }}>{"Uploading:" + imgPerc + "%"}</span>
         ) : (
           <Input
             type="file"
@@ -204,7 +214,11 @@ const Upload = ({ setOpen, type, updateId }) => {
             onChange={(e) => setImg(e.target.files[0])}
           />
         )}
-        {type==='update' ?<Button onClick={handleUpdate}>Update</Button> :<Button onClick={handleUpload}>Upload</Button>}
+        {type === "update" ? (
+          <Button onClick={handleUpdate}>Update</Button>
+        ) : (
+          <Button onClick={handleUpload}>Upload</Button>
+        )}
       </Wrapper>
     </Container>
   );
